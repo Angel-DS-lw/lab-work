@@ -1,0 +1,1161 @@
+01. Write a program to declare pointers and perform call by value and call by reference.
+
+#include <stdio.h>
+// Function declarations
+void callByValue(int num);
+void callByReference(int *ptr);
+
+int main() {
+    int a = 10;
+    int *p = &a; // Pointer declaration and initialization
+
+    printf("--- Pointer Demonstration ---\n");
+    printf("Value of a: %d\n", a);
+    printf("Address of a (&a): %p\n", (void*)&a);
+    printf("Value stored in pointer p: %p\n", (void*)p);
+    printf("Value pointed to by p (*p): %d\n\n", *p);
+
+    printf("--- Call by Value Demonstration ---\n");
+    printf("Original value of a before callByValue: %d\n", a);
+    callByValue(a);
+    printf("Value of a after callByValue (remains unchanged): %d\n\n", a);
+
+    printf("--- Call by Reference Demonstration ---\n");
+    printf("Original value of a before callByReference: %d\n", a);
+    callByReference(&a); // Passing the address of variable a
+    printf("Value of a after callByReference (modified): %d\n", a);
+
+    return 0;
+}
+
+// Function definition for Call by Value
+void callByValue(int num) {
+    num = num + 50; // Modifies only the local copy
+    printf("Inside callByValue function (modified copy): %d\n", num);
+}
+
+// Function definition for Call by Reference
+void callByReference(int *ptr) {
+    *ptr = *ptr + 50; // Modifies the original value using the pointer
+    printf("Inside callByReference function (modified original): %d\n", *ptr);
+}
+02.Develop a program to perform insertion, deletion, searching, and traversal operations on arrays.
+
+#include <stdio.h>
+int main()
+{
+    int a[100], n, i, choice, pos, value, found;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
+    printf("Enter array elements:\n");
+    for (i = 0; i < n; i++)
+    {
+        scanf("%d", &a[i]);
+    }
+
+    do
+    {
+        printf("\n--- Array Operations ---\n");
+        printf("1. Traversal\n");
+        printf("2. Insertion\n");
+        printf("3. Deletion\n");
+        printf("4. Searching\n");
+        printf("5. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                printf("Array elements are: ");
+                for (i = 0; i < n; i++)
+                {
+                    printf("%d ", a[i]);
+                }
+                printf("\n");
+                break;
+
+            case 2:
+                if (n >= 100)
+                {
+                    printf("Array is full!\n");
+                    break;
+                }
+
+                printf("Enter position to insert (1 to %d): ", n + 1);
+                scanf("%d", &pos);
+
+                if (pos < 1 || pos > n + 1)
+                {
+                    printf("Invalid position!\n");
+                    break;
+                }
+
+                printf("Enter value to insert: ");
+                scanf("%d", &value);
+
+                for (i = n; i >= pos; i--)
+                {
+                    a[i] = a[i - 1];
+                }
+
+                a[pos - 1] = value;
+                n++;
+
+                printf("Element inserted successfully.\n");
+                break;
+
+            case 3:
+                printf("Enter position to delete (1 to %d): ", n);
+                scanf("%d", &pos);
+
+                if (pos < 1 || pos > n)
+                {
+                    printf("Invalid position!\n");
+                    break;
+                }
+
+                for (i = pos - 1; i < n - 1; i++)
+                {
+                    a[i] = a[i + 1];
+                }
+
+                n--;
+
+                printf("Element deleted successfully.\n");
+                break;
+
+            case 4:
+                printf("Enter element to search: ");
+                scanf("%d", &value);
+
+                found = 0;
+
+                for (i = 0; i < n; i++)
+                {
+                    if (a[i] == value)
+                    {
+                        printf("Element found at position %d\n", i + 1);
+                        found = 1;
+                        break;
+                    }
+                }
+
+                if (found == 0)
+                {
+                    printf("Element not found.\n");
+                }
+                break;
+
+            case 5:
+                printf("Exiting program.\n");
+                break;
+
+            default:
+                printf("Invalid choice!\n");
+        }
+
+    } while (choice != 5);
+
+    return 0;
+}
+03.Implement a Stack Using an Array with operations PUSH, POP, PEEP, CHANGE, and DISPLAY .
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 5
+
+int stack[SIZE];
+int top = -1;
+
+void push();
+void pop();
+void peep();
+void change();
+void display();
+
+void push()
+{
+    int value;
+
+    if (top == SIZE - 1)
+    {
+        printf("Stack Overflow!\n");
+    }
+    else
+    {
+        printf("Enter value to push: ");
+        scanf("%d", &value);
+
+        stack[++top] = value;
+        printf("Element pushed successfully.\n");
+    }
+}
+
+void pop()
+{
+    if (top == -1)
+    {
+        printf("Stack Underflow!\n");
+    }
+    else
+    {
+        printf("Popped element: %d\n", stack[top]);
+        top--;
+    }
+}
+
+void peep()
+{
+    int pos;
+
+    if (top == -1)
+    {
+        printf("Stack is empty!\n");
+        return;
+    }
+
+    printf("Enter position from top (1 to %d): ", top + 1);
+    scanf("%d", &pos);
+
+    if (pos < 1 || pos > top + 1)
+    {
+        printf("Invalid position!\n");
+    }
+    else
+    {
+        printf("Element: %d\n", stack[top - pos + 1]);
+    }
+}
+
+void change()
+{
+    int pos, value;
+
+    if (top == -1)
+    {
+        printf("Stack is empty!\n");
+        return;
+    }
+
+    printf("Enter position from top (1 to %d): ", top + 1);
+    scanf("%d", &pos);
+
+    if (pos < 1 || pos > top + 1)
+    {
+        printf("Invalid position!\n");
+    }
+    else
+    {
+        printf("Enter new value: ");
+        scanf("%d", &value);
+
+        stack[top - pos + 1] = value;
+        printf("Element changed successfully.\n");
+    }
+}
+
+void display()
+{
+    int i;
+
+    if (top == -1)
+    {
+        printf("Stack is empty!\n");
+    }
+    else
+    {
+        printf("Stack elements (top to bottom):\n");
+
+        for (i = top; i >= 0; i--)
+        {
+            printf("%d\n", stack[i]);
+        }
+    }
+}
+
+int main()
+{
+    int ch;
+
+    while (1)
+    {
+        printf("\n--- Stack Operations ---\n");
+        printf("1. PUSH\n");
+        printf("2. POP\n");
+        printf("3. PEEP\n");
+        printf("4. CHANGE\n");
+        printf("5. DISPLAY\n");
+        printf("6. EXIT\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &ch);
+
+        switch (ch)
+        {
+            case 1:
+                push();
+                break;
+
+            case 2:
+                pop();
+                break;
+
+            case 3:
+                peep();
+                break;
+
+            case 4:
+                change();
+                break;
+
+            case 5:
+                display();
+                break;
+
+            case 6:
+                exit(0);
+
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+
+    return 0;
+}
+04. Implement a program to convert Infix Notation to Postfix Notation Using Stack.
+
+#include <stdio.h>
+#include <ctype.h>
+
+char stack[100];
+int top = -1;
+
+void push(char x)
+{
+    stack[++top] = x;
+}
+
+char pop()
+{
+    if (top == -1)
+        return -1;
+    else
+        return stack[top--];
+}
+
+int priority(char x)
+{
+    if (x == '(')
+        return 0;
+    if (x == '+' || x == '-')
+        return 1;
+    if (x == '*' || x == '/')
+        return 2;
+    if (x == '^')
+        return 3;
+
+    return 0;
+}
+
+int main()
+{
+    char exp[100], *e, x;
+
+    printf("Enter infix expression: ");
+    scanf("%99s", exp);
+
+    e = exp;
+
+    while (*e != '\0')
+    {
+        if (isalnum((unsigned char)*e))
+            printf("%c", *e);
+
+        else if (*e == '(')
+            push(*e);
+
+        else if (*e == ')')
+        {
+            while ((x = pop()) != '(' && x != -1)
+                printf("%c", x);
+        }
+
+        else
+        {
+            while (top != -1 &&
+                   priority(stack[top]) >= priority(*e))
+            {
+                if (*e == '^' && stack[top] == '^')
+                    break;
+
+                printf("%c", pop());
+            }
+
+            push(*e);
+        }
+
+        e++;
+    }
+
+    while (top != -1)
+        printf("%c", pop());
+
+    printf("\n");
+
+    return 0;
+}
+05.implement a C program to implement a queue using an array with the operations INSERT (Enqueue), DELETE (Dequeue), and DISPLAY.
+
+#include <stdio.h>
+#include <stdlib.h>
+#define SIZE 10
+
+int main()
+{
+    int queue[SIZE];
+    int front = -1, rear = -1;
+    int ch, value, i;
+
+    while (1)
+    {
+        printf("\n--- Queue Using Array ---\n");
+        printf("1. INSERT (Enqueue)\n");
+        printf("2. DELETE (Dequeue)\n");
+        printf("3. DISPLAY\n");
+        printf("4. EXIT\n");
+        printf("Enter your choice: ");
+        scanf("%d", &ch);
+
+        switch (ch)
+        {
+            case 1:
+                if (rear == SIZE - 1)
+                {
+                    printf("Queue Overflow!\n");
+                }
+                else
+                {
+                    printf("Enter element to insert: ");
+                    scanf("%d", &value);
+
+                    if (front == -1)
+                        front = 0;
+
+                    rear++;
+                    queue[rear] = value;
+
+                    printf("Element inserted successfully.\n");
+                }
+                break;
+
+            case 2:
+                if (front == -1 || front > rear)
+                {
+                    printf("Queue Underflow!\n");
+                }
+                else
+                {
+                    printf("Deleted element: %d\n", queue[front]);
+                    front++;
+
+                    if (front > rear)
+                    {
+                        front = -1;
+                        rear = -1;
+                    }
+                }
+                break;
+
+            case 3:
+                if (front == -1)
+                {
+                    printf("Queue is empty!\n");
+                }
+                else
+                {
+                    printf("Queue elements are: ");
+                    for (i = front; i <= rear; i++)
+                    {
+                        printf("%d ", queue[i]);
+                    }
+                    printf("\n");
+                }
+                break;
+
+            case 4:
+                exit(0);
+
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+
+    return 0;
+}
+06. Implement a singly linked list with operations such as insertion (beginning/end/specified
+position)
+
+#include <stdio.h>
+#include<conio.h>
+#include <stdlib.h>
+
+// Define the structure for a linked list node
+struct Node {
+int data;
+struct Node* next;
+
+};
+
+// Helper function to dynamically allocate a new node
+struct Node* createNode(int value) {
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+if (newNode == NULL) {
+printf("Memory allocation failed!\n");
+exit(1); // Exit if heap memory is full
+}
+newNode->data = value;
+newNode->next = NULL;
+return newNode;
+}
+
+// Insertion at the beginning (Head)
+void insertAtBeginning(struct Node** headRef, int value) {
+struct Node* newNode = createNode(value);
+
+// Point the new node to the current head, then update head
+newNode->next = *headRef;
+*headRef = newNode;
+printf("Inserted %d at the beginning.\n", value);
+}
+
+// Insertion at the end (Tail)
+void insertAtEnd(struct Node** headRef, int value) {
+struct Node* newNode = createNode(value);
+
+// If the list is empty, the new node becomes the head
+if (*headRef == NULL) {
+*headRef = newNode;
+
+printf("Inserted %d at the end (list was empty).\n", value);
+return;
+}
+
+// Traverse to find the last node
+struct Node* temp = *headRef;
+while (temp->next != NULL) {
+temp = temp->next;
+}
+
+// Link the last node to the new node
+temp->next = newNode;
+printf("Inserted %d at the end.\n", value);
+}
+
+// Insertion at a specified position (1-indexed)
+void insertAtPosition(struct Node** headRef, int value, int position) {
+// If position is 1, it's equivalent to inserting at the beginning
+if (position == 1) {
+insertAtBeginning(headRef, value);
+return;
+}
+
+struct Node* temp = *headRef;
+
+// Traverse to the node right before the target position (position - 1)
+for (int i = 1; i < position - 1; i++) {
+if (temp == NULL) {
+printf("Invalid position! The list is shorter than expected.\n");
+return;
+}
+
+temp = temp->next;
+}
+
+// Check if the previous node exists
+if (temp == NULL) {
+printf("Invalid position! Position is out of bounds.\n");
+return;
+}
+
+// Create node and link it into the list
+struct Node* newNode = createNode(value);
+newNode->next = temp->next;
+temp->next = newNode;
+printf("Inserted %d at position %d.\n", value, position);
+}
+
+// Function to print the entire linked list
+void displayList(struct Node* head) {
+if (head == NULL) {
+printf("The list is currently empty.\n");
+return;
+}
+
+struct Node* temp = head;
+printf("Linked List: ");
+while (temp != NULL) {
+printf("%d -> ", temp->data);
+temp = temp->next;
+}
+printf("NULL\n");
+}
+
+// Memory cleanup routine to avoid memory leaks
+void freeList(struct Node* head) {
+struct Node* temp;
+while (head != NULL) {
+temp = head;
+head = head->next;
+free(temp);
+}
+}
+
+// Main execution frame demonstrating functionality
+void main() {
+// Initialize an empty list
+struct Node* head = NULL;
+
+// Demonstrate Insert at Beginning
+insertAtBeginning(&head, 10);
+insertAtBeginning(&head, 20);
+displayList(head); // Output: 20 -> 10 -> NULL
+
+// Demonstrate Insert at End
+insertAtEnd(&head, 30);
+insertAtEnd(&head, 40);
+displayList(head); // Output: 20 -> 10 -> 30 -> 40 -> NULL
+
+// Demonstrate Insert at Specified Position
+insertAtPosition(&head, 15, 2); // Insert 15 at position 2
+displayList(head); // Output: 20 -> 15 -> 10 -> 30 -> 40 -> NULL
+
+insertAtPosition(&head, 5, 1); // Insert 5 at position 1 (Head edge case)
+
+displayList(head); // Output: 5 -> 20 -> 15 -> 10 -> 30 -> 40 -> NULL
+
+insertAtPosition(&head, 100, 10); // Attempt an out-of-bounds position
+
+// Free heap allocations before exiting
+freeList(head);
+getch();
+}
+07. Implement a singly linked list with operations such as deletion (beginning/end/specified
+position)
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+int data;
+struct Node* next;
+};
+
+void insertAtEnd(struct Node** head_ref, int new_data);
+void deleteFromBeginning(struct Node** head_ref);
+void deleteFromEnd(struct Node** head_ref);
+void deleteFromPosition(struct Node** head_ref, int position);
+void displayList(struct Node* node);
+
+int main() {
+struct Node* head = NULL;
+
+insertAtEnd(&head, 10);
+insertAtEnd(&head, 20);
+insertAtEnd(&head, 30);
+insertAtEnd(&head, 40);
+insertAtEnd(&head, 50);
+
+printf("Original List: ");
+displayList(head);
+
+deleteFromBeginning(&head);
+printf("After deleting from beginning: ");
+displayList(head);
+
+deleteFromEnd(&head);
+printf("After deleting from end: ");
+displayList(head);
+
+deleteFromPosition(&head, 2);
+printf("After deleting from position 2: ");
+displayList(head);
+
+return 0;
+}
+
+void insertAtEnd(struct Node** head_ref, int new_data) {
+struct Node* new_node = (struct Node*)malloc(sizeof(struct Node));
+struct Node* last = *head_ref;
+new_node->data = new_data;
+new_node->next = NULL;
+
+if (*head_ref == NULL) {
+*head_ref = new_node;
+return;
+}
+
+while (last->next != NULL) {
+last = last->next;
+}
+last->next = new_node;
+}
+
+void deleteFromBeginning(struct Node** head_ref) {
+if (*head_ref == NULL) {
+printf("List is empty. Deletion failed.\n");
+return;
+}
+
+struct Node* temp = *head_ref;
+*head_ref = (*head_ref)->next;
+free(temp);
+}
+
+void deleteFromEnd(struct Node** head_ref) {
+if (*head_ref == NULL) {
+printf("List is empty. Deletion failed.\n");
+return;
+}
+
+struct Node* temp = *head_ref;
+
+if (temp->next == NULL) {
+*head_ref = NULL;
+free(temp);
+return;
+}
+
+while (temp->next->next != NULL) {
+temp = temp->next;
+}
+
+free(temp->next);
+
+temp->next = NULL;
+}
+
+void deleteFromPosition(struct Node** head_ref, int position) {
+if (*head_ref == NULL) {
+printf("List is empty. Deletion failed.\n");
+return;
+}
+
+struct Node* temp = *head_ref;
+
+if (position == 1) {
+*head_ref = temp->next;
+free(temp);
+return;
+}
+
+for (int i = 1; temp != NULL && i < position - 1; i++) {
+temp = temp->next;
+}
+
+if (temp == NULL || temp->next == NULL) {
+printf("Position %d is out of bounds.\n", position);
+return;
+}
+
+struct Node* next = temp->next->next;
+
+free(temp->next);
+
+temp->next = next;
+
+}
+
+void displayList(struct Node* node) {
+if (node == NULL) {
+printf("List is empty.\n");
+return;
+}
+while (node != NULL) {
+printf("%d -> ", node->data);
+node = node->next;
+}
+printf("NULL\n");
+}
+08. Develop a doubly linked list to implement insertion and deletion operations at different
+positions (beginning/end/specified position).
+#include <stdio.h>
+#include <stdlib.h>
+
+// Linked List Node
+struct node {
+int info;
+struct node *prev, *next;
+};
+struct node* start = NULL;
+
+// Function to traverse the linked list
+void traverse()
+{
+// List is empty
+if (start == NULL) {
+printf("\nList is empty\n");
+return;
+}
+// Else print the Data
+struct node* temp;
+temp = start;
+while (temp != NULL) {
+printf("Data = %d\n", temp->info);
+temp = temp->next;
+}
+}
+
+// Function to insert at the front
+// of the linked list
+void insertAtFront()
+{
+int data;
+struct node* temp;
+temp = (struct node*)malloc(sizeof(struct node));
+printf("\nEnter number to be inserted: ");
+scanf("%d", &data);
+temp->info = data;
+temp->prev = NULL;
+
+// Pointer of temp will be
+
+// assigned to start
+temp->next = start;
+start = temp;
+}
+
+// Function to insert at the end of
+// the linked list
+void insertAtEnd()
+{
+int data;
+struct node *temp, *trav;
+temp = (struct node*)malloc(sizeof(struct node));
+temp->prev = NULL;
+temp->next = NULL;
+printf("\nEnter number to be inserted: ");
+scanf("%d", &data);
+temp->info = data;
+temp->next = NULL;
+trav = start;
+
+// If start is NULL
+if (start == NULL) {
+
+start = temp;
+}
+
+// Changes Links
+else {
+while (trav->next != NULL)
+trav = trav->next;
+temp->prev = trav;
+
+trav->next = temp;
+}
+}
+
+// Function to insert at any specified
+// position in the linked list
+void insertAtPosition()
+{
+int data, pos, i = 1;
+struct node *temp, *newnode;
+newnode = malloc(sizeof(struct node));
+newnode->next = NULL;
+newnode->prev = NULL;
+
+// Enter the position and data
+printf("\nEnter position : ");
+scanf("%d", &pos);
+
+// If start==NULL,
+if (start == NULL) {
+start = newnode;
+newnode->prev = NULL;
+newnode->next = NULL;
+}
+
+// If position==1,
+else if (pos == 1) {
+// this is author method its correct but we can simply call insertAtfront() function for this
+special case
+/* newnode->next = start;
+
+newnode->next->prev = newnode;
+newnode->prev = NULL;
+start = newnode; */
+insertAtFront();
+}
+
+// Change links
+else {
+printf("\nEnter number to be inserted: ");
+scanf("%d", &data);
+newnode->info = data;
+temp = start;
+while (i < pos - 1) {
+temp = temp->next;
+i++;
+}
+newnode->next = temp->next;
+newnode->prev = temp;
+temp->next = newnode;
+temp->next->prev = newnode;
+}
+}
+
+// Function to delete from the front
+// of the linked list
+void deleteFirst()
+{
+struct node* temp;
+if (start == NULL)
+printf("\nList is empty\n");
+else {
+
+temp = start;
+start = start->next;
+if (start != NULL)
+start->prev = NULL;
+free(temp);
+}
+}
+
+// Function to delete from the end
+// of the linked list
+void deleteEnd()
+{
+struct node* temp;
+if (start == NULL)
+printf("\nList is empty\n");
+temp = start;
+while (temp->next != NULL)
+temp = temp->next;
+if (start->next == NULL)
+start = NULL;
+else {
+temp->prev->next = NULL;
+free(temp);
+}
+}
+
+// Function to delete from any specified
+// position from the linked list
+void deletePosition()
+{
+int pos, i = 1;
+
+struct node *temp, *position;
+temp = start;
+
+// If DLL is empty
+if (start == NULL)
+printf("\nList is empty\n");
+
+// Otherwise
+else {
+// Position to be deleted
+printf("\nEnter position : ");
+scanf("%d", &pos);
+
+// If the position is the first node
+if (pos == 1) {
+deleteFirst();
+if (start != NULL) {
+start->prev = NULL;
+}
+free(position);
+return;
+}
+
+// Traverse till position
+while (i < pos - 1) {
+temp = temp->next;
+i++;
+}
+// Change Links
+position = temp->next;
+if (position->next != NULL)
+
+position->next->prev = temp;
+temp->next = position->next;
+
+// Free memory
+free(position);
+}
+}
+
+// Driver Code
+int main()
+{
+int choice;
+while (1) {
+
+printf("\n\t1 To see list\n");
+printf("\t2 For insertion at"
+" starting\n");
+printf("\t3 For insertion at"
+" end\n");
+printf("\t4 For insertion at "
+"any position\n");
+printf("\t5 For deletion of "
+"first element\n");
+printf("\t6 For deletion of "
+"last element\n");
+printf("\t7 For deletion of "
+"element at any position\n");
+printf("\t8 To exit\n");
+printf("\nEnter Choice :\n");
+scanf("%d", &choice);
+
+switch (choice) {
+case 1:
+traverse();
+break;
+case 2:
+insertAtFront();
+break;
+case 3:
+insertAtEnd();
+break;
+case 4:
+insertAtPosition();
+break;
+case 5:
+deleteFirst();
+break;
+case 6:
+deleteEnd();
+break;
+case 7:
+deletePosition();
+break;
+
+case 8:
+exit(1);
+break;
+default:
+printf("Incorrect Choice. Try Again \n");
+continue;
+}
+}
+
+return 0;
+}
+09. Write a program to create a Binary Search Tree (BST)
+#include <stdio.h>
+#include<conio.h>
+#include <stdlib.h>
+struct Node {
+int data;
+struct Node* left;
+struct Node* right;
+};
+// Function to create a new node
+struct Node* createNode(int value) {
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->data = value;
+newNode->left = NULL;
+newNode->right = NULL;
+return newNode;
+}
+struct Node* insert(struct Node* root, int value) {
+if (root == NULL) {
+return createNode(value);
+}
+
+if (value < root->data) {
+root->left = insert(root->left, value);
+} else if (value > root->data) {
+root->right = insert(root->right, value);
+}
+
+return root;
+}
+void inorder(struct Node* root) {
+
+if (root != NULL) {
+inorder(root->left);
+printf("%d ", root->data);
+inorder(root->right);
+}
+}
+void main() {
+struct Node* root = NULL;
+root = insert(root, 50);
+insert(root, 30);
+insert(root, 70);
+insert(root, 20);
+insert(root, 40);
+insert(root, 60);
+insert(root, 80);
+printf("Inorder traversal of BST: ");
+inorder(root);
+getch();
+}
+10. Implement traversal methods (inorder, preorder, postorder) for a binary tree.
+#include <stdio.h>
+#include<conio.h>
+#include <stdlib.h>
+struct Node {
+int data;
+struct Node *left, *right;
+};
+
+struct Node* createNode(int value) {
+struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+newNode->data = value;
+newNode->left = NULL;
+newNode->right = NULL;
+return newNode;
+}
+
+// Inorder Traversal (Left -> Root -> Right)
+void inorder(struct Node* root) {
+if (root != NULL) {
+inorder(root->left);
+printf("%d ", root->data);
+inorder(root->right);
+}
+}
+
+// Preorder Traversal (Root -> Left -> Right)
+void preorder(struct Node* root) {
+if (root != NULL) {
+printf("%d ", root->data);
+preorder(root->left);
+
+preorder(root->right);
+}
+}
+
+void postorder(struct Node* root) {
+if (root != NULL) {
+postorder(root->left);
+postorder(root->right);
+printf("%d ", root->data);
+}
+}
+
+void main() {
+
+struct Node* root = createNode(10);
+root->left = createNode(20);
+root->right = createNode(30);
+root->left->left = createNode(40);
+root->left->right = createNode(50);
+root->right->left = createNode(60);
+root->right->right = createNode(70);
+
+printf("Inorder Traversal: ");
+inorder(root);
+
+printf("\nPreorder Traversal: ");
+preorder(root);
+printf("\nPostorder Traversal: ");
+postorder(root);
+getch();
+}
